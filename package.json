@@ -1,0 +1,16 @@
+{
+  "name": "multi-service-starter",
+  "version": "0.0.1",
+  "description": "This application will start multiple services simultainously rather than starting individual ones manually on command prompt",
+  "main": "bin/index.js",
+  "scripts": {},
+  "author": "sm@ramavarma.me",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  },
+  "repository": "https://github.com/ramavarma/multi-service.git",
+  "dependencies": {
+    "@types/node": "^13.7.0"
+  }
+}
