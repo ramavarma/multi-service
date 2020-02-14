@@ -1,6 +1,6 @@
 {
   "name": "nodemss",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Interactive cli tool to list and run start multiple services simultainously",
   "main": "bin/cli.js",
   "scripts": {
