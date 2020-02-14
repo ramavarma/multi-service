@@ -1,16 +1,65 @@
 {
-  "name": "mss",
-  "version": "0.0.1",
-  "description": "This application will start multiple services simultainously rather than starting individual ones manually on command prompt",
-  "main": "bin/index.js",
-  "scripts": {},
-  "author": "sm@ramavarma.me",
+  "name": "nodemss",
+  "version": "0.0.5",
+  "description": "Interactive cli tool to list and run start multiple services simultainously",
+  "main": "bin/cli.js",
+  "scripts": {
+    "start": "ntl",
+    "build": "tsc && cp package.json ./dist",
+    "npmjs publish": "cd ./dist && npm publish",
+    "readme-toc": "markdown-toc --no-firsth1 README.md"
+  },
+  "author": {
+    "name": "Vinay Varma",
+    "email": "sm@ramavarma.me",
+    "url": "http://www.ramavarma.me"
+  },
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "markdown-toc": "^1.2.0",
+    "ntl": "^5.0.0",
+    "pbcopy": "0.0.1",
+    "typescript": "^3.7.5"
   },
   "repository": "https://github.com/ramavarma/multi-service.git",
   "dependencies": {
     "@types/node": "^13.7.0"
-  }
+  },
+  "keywords": [
+    "npm",
+    "task",
+    "scripts",
+    "list",
+    "interactive",
+    "inquirer",
+    "unix",
+    "terminal",
+    "workflow",
+    "cli-app",
+    "cli",
+    "mss",
+    "ipt",
+    "runner",
+    "menu",
+    "serverless",
+    "micro-services",
+    "process"
+  ],
+  "bin": {
+    "nodemss": "bin/cli.js"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "files": [
+    "bin/cli.js",
+    "lib/command-handler.js",
+    "lib/command-line-handler.js",
+    "lib/main.js",
+    "models/cofig-model.js",
+    "models/process-state.js",
+    "models/process-status.js",
+    "models/proess.js"
+  ]
 }

@@ -79,9 +79,9 @@ export class CommandHandler {
     private showHelp() {
         console.log(`Showing options:`);
         console.log(`?:                  \tShows help screen.`);
-        console.log(`find [xxxx]:          \tFinds the process matching the pattern xxxx`);
+        console.log(`find [xxxx]:        \tFinds the process matching the pattern xxxx`);
         console.log(`kill xxxx:          \tKills the process associated with PID xxxx`);
-        console.log(`killAll:            \tLists all process started and their status`);
+        console.log(`killAll:            \tKills all process started and their status`);
         console.log(`listAll:            \tLists all process started and their status`);
         console.log(`start service name: \tStarts the service identified by the name. If the service is started already, it will ignore the command`);
         console.log(`startAll:           \tStarts all the services. If the service is started already, it will ignore the command`);
