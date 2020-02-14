@@ -5,5 +5,5 @@ export interface ProcessState {
     processId: number;
     name: string;
     status: ProcessStatus;
-    process: ChildProcess;
+    process?: ChildProcess;
 }

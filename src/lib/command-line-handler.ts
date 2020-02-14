@@ -1,25 +1,24 @@
 import { readFileSync } from 'fs';
-import { ConfigModel } from '../models/config-model';
 import { Main } from './main';
-import { ProcessState } from '../models/process-state';
 
 export class CommandLineHandler {
 
+    private main: Main;
     private commandLine: Array<string>;
-    private runningProcessess: Array<ProcessState>;
 
-    constructor(argv: any, runningProcessList: Array<ProcessState>) {
-        console.log(argv);
+    constructor(argv: any) {
         this.commandLine =argv;
-        this.runningProcessess = runningProcessList;
     }
 
     process() {
+        this.processConfigFile();
         switch (this.commandLine [2]) {
             case 'run':
-                this.processConfigFile();
+                this.main.run();
                 break;
-        
+            case '--config':
+                console.log(`Loaded config file into the system.`);
+                break;
             default:
                 this.showError();
                 break;
@@ -28,6 +27,7 @@ export class CommandLineHandler {
 
     private showError() {
         console.log(`Unknown parameters: ${this.commandLine} `);
+        console.log(`Arguments should be: command [run] --config path_to_config_file`);
     }
 
     private processConfigFile() {
@@ -37,9 +37,10 @@ export class CommandLineHandler {
             throw Error;
         }
         const fileName = this.commandLine[configLoc + 1];
-        const main: Main = new Main(this.runningProcessess);
-        main.run(JSON.parse(readFileSync(fileName, {encoding: 'UTF-8'})));
+        this.main = new Main(JSON.parse(readFileSync(fileName, {encoding: 'UTF-8'})));
     }
 
-
+    public getMain(): Main {
+        return this.main;
+    }
 }

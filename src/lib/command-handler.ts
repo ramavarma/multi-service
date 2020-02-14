@@ -1,9 +1,9 @@
 import { ReadLine, createInterface } from 'readline';
 import { ProcessState } from '../models/process-state';
 import { Main } from './main';
+import { Process } from '../models/process';
 
 export class CommandHandler {
-    private runningProcessess: Array<ProcessState>;
     private main: Main;
 
     private readline: ReadLine =  createInterface({
@@ -11,12 +11,11 @@ export class CommandHandler {
         output: process.stdout
     });
 
-    constructor(runningProcessList: Array<ProcessState>) {
-        this.runningProcessess = runningProcessList;
-        this.main = new Main(runningProcessList);
+    constructor() {
     }
 
-    listenToCommand() {
+    listenToCommand(main: Main) {
+        this.main = main;
         console.log(`Waiting for command. Type '?' for help`);
         this.readline.on('line', (input) => {
             this.commandInterpreter(input);
@@ -34,19 +33,15 @@ export class CommandHandler {
     }
 
     private commandInterpreter(command: string) {
-        let commands: Array<string> = new Array<string>();
         let subCommand = '';
         let args = '';
-        commands = command.split(' ');
-        // console.log(`Length of command: ${commands.length}`);
-        if (command.split(' ').length > 1) {
-            subCommand = commands[0];
-            args = commands[1];
-        } else {
+        let firstIndexOfSpace = command.trim().indexOf(' ');
+        if (firstIndexOfSpace < 0) {
             subCommand = command;
-        };
-        // console.log(`Sub Command: ${subCommand}`);
-        // console.log(`Args: ${args}`);
+        } else {
+            subCommand = command.split(' ', 1)[0];
+            args = command.substring(firstIndexOfSpace + 1, command.length);
+        }
         switch (subCommand) {
             case '?':
                 this.showHelp();
@@ -66,6 +61,15 @@ export class CommandHandler {
             case 'killAll':
                 this.main.killAll();
                 break;
+            case 'start':
+                this.main.start(args);
+                break;
+            case 'startAll':
+                this.main.startAll();
+                break;
+            case 'find':
+                this.find(args);
+                break;
             default:
                 this.showHelp();
                 break;
@@ -73,19 +77,22 @@ export class CommandHandler {
     }
 
     private showHelp() {
-        console.log(`Showing options:\n`);
-        console.log(`?:          \tShows help screen.\n`);
-        console.log(`kill xxxx:  \tKills the process associated with PID xxxx\n`);
-        console.log(`killAll:    \tLists all process started and their status\n`);
-        console.log(`listAll:    \tLists all process started and their status\n`);
-        console.log(`exit || bye:\tExits the programme. !!All opened processess may be still running!!\n`);
+        console.log(`Showing options:`);
+        console.log(`?:                  \tShows help screen.`);
+        console.log(`find [xxxx]:          \tFinds the process matching the pattern xxxx`);
+        console.log(`kill xxxx:          \tKills the process associated with PID xxxx`);
+        console.log(`killAll:            \tLists all process started and their status`);
+        console.log(`listAll:            \tLists all process started and their status`);
+        console.log(`start service name: \tStarts the service identified by the name. If the service is started already, it will ignore the command`);
+        console.log(`startAll:           \tStarts all the services. If the service is started already, it will ignore the command`);
+        console.log(`exit || bye:        \tExits the programme. !!All opened processess may be still running!!`);
         console.log();
     }
 
     private listAll() {
         console.log(`PID \tNAME \tSTATUS`);
         console.log(`---------------------------------------------------------------------------`);
-        this.runningProcessess.forEach((state: ProcessState) => {
+        this.main.getRunningProcessess().forEach((state: ProcessState) => {
             console.log(`${state.processId}\t${state.name}\t${state.status}`);
         });
     }
@@ -94,5 +101,18 @@ export class CommandHandler {
         console.log(command);
         this.main.kill(Number(command));
         
+    }
+
+    private find(name: string) {
+        console.log(`NAME`);
+        console.log(`-----`)
+        this.main.getProcessFromConfigFileByLikeName(name).then((value: Array<Process>) => {
+            value.forEach((process: Process) => {
+                console.log(process.name);
+            });
+            console.log();
+        }).catch( (error: Error) => {
+            console.log(error);
+        });
     }
 }

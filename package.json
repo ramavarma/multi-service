@@ -1,5 +1,5 @@
 {
-  "name": "multi-service-starter",
+  "name": "mss",
   "version": "0.0.1",
   "description": "This application will start multiple services simultainously rather than starting individual ones manually on command prompt",
   "main": "bin/index.js",
